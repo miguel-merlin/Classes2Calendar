@@ -1,12 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
+import { AuthContext } from "../../Context/AuthContext";
 import jwt_decode from "jwt-decode";
 
 const GoogleLogin = () => {
 
+    const {setIsLoggedIn, setUserObject} = useContext(AuthContext);
+
     function handleCallbackResponse(response) {
-        console.log("Encoded JWT ID token " + response.credential)
         var userObject = jwt_decode(response.credential);
-        console.log(userObject)
+        setUserObject(userObject)
+
+        if (userObject.email_verified) {
+            setIsLoggedIn(true);
+        }
     }
 
     useEffect(() => {
