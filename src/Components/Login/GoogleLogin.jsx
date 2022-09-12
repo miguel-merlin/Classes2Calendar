@@ -6,16 +6,16 @@ const GoogleLogin = () => {
 
     const {setIsLoggedIn, setUserObject} = useContext(AuthContext);
 
-    function handleCallbackResponse(response) {
-        var userObject = jwt_decode(response.credential);
-        setUserObject(userObject)
-
-        if (userObject.email_verified) {
-            setIsLoggedIn(true);
-        }
-    }
-
     useEffect(() => {
+        function handleCallbackResponse(response) {
+            var userObject = jwt_decode(response.credential);
+            setUserObject(userObject)
+    
+            if (userObject.email_verified) {
+                setIsLoggedIn(true);
+            }
+        }
+
         /* global google */
         google.accounts.id.initialize({
             client_id: `${process.env.REACT_APP_CLIENT_ID}`,
@@ -27,7 +27,7 @@ const GoogleLogin = () => {
             {theme: "outline", size:"large"}
         );
         google.accounts.id.prompt();
-    }, []);
+    }, [setIsLoggedIn, setUserObject]);
 
     return(
         <div>
